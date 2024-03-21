@@ -14,3 +14,6 @@
 * To better learn C++, WIN32API, and make a project that can be used by security researchers and even students to become more educated on WIN32API abuse and common persistence mechanisms used by threat actors and APTs.
 * This project additionally will be restricted to non-domain Windows persistence mechanisms, and some will live exclusively in memory after running the program (you restart and they die, which is why its important for forensic analysts to capture RAM on a live machine).
 * The intended audience like stated before is any interested security researcher and or students that want to educate themselves and even practice their skills if they so desire to run the program and identify all of the persistence mechanisms on their own.
+
+# Compiling
+`g++ Qliphoth.cpp -o Qliphoth.exe -lnetapi32`
