@@ -3,6 +3,8 @@
 #include <string.h>
 #include <lm.h>
 #include <filesystem>
+#include <stdlib.h>
+#include <lmaccess.h>
 
 // g++ Qliphoth.cpp -o Qliphoth.exe -lnetapi32
 
@@ -180,4 +182,4 @@ int main() {
     return 0;
 }
 
-// Useful error code knowledge: https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-
+// Useful error code knowledge: https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes
