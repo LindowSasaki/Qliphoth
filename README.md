@@ -17,5 +17,11 @@
 * https://attack.mitre.org/tactics/TA0003/
 
 # Compiling (you must be an Administrator)
+* Open a Command Prompt or PowerShell window as Administrator
 * <b>Qliphoth</b> - `g++ Qliphoth.cpp -o Qliphoth.exe -lnetapi32`
 * <b>Sephiroth</b> - `g++ Sephiroth.cpp -o Sephiroth.exe -lnetapi32`
+
+# Running (you also must be an Administrator)
+* Each program has output detailing whether it was able to successfully or unsuccessfully perform its actions. Qliphoth requires administrative privileges (though if you changed some things like only doing the specific user startup folder instead then that doesn't require admin) to perform its tasks. Sephiroth also requires admin, but will tell you if it has found the planted elements or not.
+* <b>Qliphoth</b> - `.\Qliphoth.exe`
+* <b>Sephiroth</b> - `.\Sephiroth.exe` 
