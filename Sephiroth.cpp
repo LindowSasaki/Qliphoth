@@ -32,7 +32,7 @@ int cleanStartupFolder() {
     return 0;
 } 
 
-int removeKey() {
+int removeRunKey() {
     HKEY hKey = NULL;
     const char* exe = "C:\\Windows\\System32\\cmd.exe";
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -103,10 +103,61 @@ int deleteUser() {
     return 0;
 }
 
+
+
+int removeService() {
+    return 0;
+}
+
+
+
+int removeHKCUEnvironment() {
+    HKEY hKey = NULL;
+    const char* exe = "C:\\Windows\\System32\\cmd.exe";
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    LONG res = RegOpenKeyExA(
+        HKEY_CURRENT_USER,
+        (LPCSTR)"Environment",
+        0,
+        KEY_ALL_ACCESS,
+        &hKey
+    );
+
+    if (res == ERROR_SUCCESS) {
+        SetConsoleTextAttribute(hConsole, 2);
+        std::cout << "Successfully opened Environment key, attempting to delete now..." << std::endl;
+        SetConsoleTextAttribute(hConsole, 15);
+
+        LONG res2 = RegDeleteValueA(
+            hKey,
+            (LPCSTR)"UserInitMprLogonScript"
+        );
+        if (res2 == ERROR_SUCCESS) {
+            SetConsoleTextAttribute(hConsole, 2);
+            std::cout << "Successfully deleted Environment key, closing key now..." << std::endl;
+            SetConsoleTextAttribute(hConsole, 15);
+        } else {
+            SetConsoleTextAttribute(hConsole, 6);
+            std::cout << "Key doesn't exist " << res << std::endl;;
+            SetConsoleTextAttribute(hConsole, 15);
+        }
+        RegCloseKey(hKey);
+    } else {
+        SetConsoleTextAttribute(hConsole, 4); 
+        std::cout << "Failed with code: " << res << std::endl;;
+        SetConsoleTextAttribute(hConsole, 15);
+    }
+
+    return 0;
+}
+
 int main() {
     cleanStartupFolder();
-    removeKey();
+    removeRunKey();
     deleteUser();
+    removeService();
+    removeHKCUEnvironment();
 
     return 0;
 }
